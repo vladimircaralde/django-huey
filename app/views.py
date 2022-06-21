@@ -19,21 +19,26 @@ def huey_task(request):
     django_huey_task.schedule(delay=3)
     return {"message": "success"}
 
+
 @api.post("/huey_db_task_create")
 def huey_db_task_create(request, payload: CarInput):
-    django_huey_db_task_create(
-        payload.name, payload.color, payload.fuel_type
+    # some_task.schedule((params), delay=123)
+    django_huey_db_task_create.schedule(
+        (payload.name, payload.color, payload.fuel_type),
+        delay=5
     )
     return {"message": "successfully created a car"}
 
 
 @api.get("/huey_db_task_cars")
 def huey_db_task_cars(request):
-    django_huey_db_task_cars.schedule(delay=3)
+    # no delay
+    django_huey_db_task_cars()
     return {"message": "success"}
 
 
 @api.delete("/huey_db_task_delete/{car_id}")
-def huey_db_task_delete(request, car_id: int):
-    django_huey_db_task_delete(car_id)
+def huey_db_task_delete(request, car_id):
+    # some_task.schedule((params), delay=123)
+    django_huey_db_task_delete.schedule(car_id, delay=5)
     return {"message": "successfully deleted"}
